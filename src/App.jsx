@@ -1,24 +1,26 @@
-import { useDispatch, useSelector } from "react-redux";
+import { NavLink, Outlet } from "react-router-dom";
 import "./App.css";
-import { setTheme } from "./slices/themeSlice";
+import Theme from "./components/Theme";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { allProducts } from "./thunks/productsThunks";
 
 function App() {
-  const theme = useSelector((state) => state.theme);
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const changeTheme = () => {
-    dispatch(setTheme("blue"));
-  };
-
+    useEffect(() => {
+      dispatch(allProducts());
+      dispatch(allProducts());
+    }, []);
+  
   return (
     <div>
-      {theme.colors.map((color) => (
-        <button onClick={() => dispatch(setTheme(color))} key={color}>
-          {color}
-        </button>
-      ))}
-      {theme.value}
-      
+      <Theme />
+      <div>
+        <NavLink to="/">Home</NavLink>
+        <NavLink to="/shop">Shop</NavLink>
+      </div>
+      <Outlet />
     </div>
   );
 }
